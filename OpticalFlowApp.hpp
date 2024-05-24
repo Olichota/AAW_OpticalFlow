@@ -25,8 +25,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include "CLUtil.hpp"
-#include "SDKBitMap.hpp"
+//#include "CLUtil.hpp"
+//#include "SDKBitMap.hpp"
+
+#include "C:\Users\sebas\AMD APP SDK\3.0\include\SDKUtil\CLUtil.hpp"
+#include "C:\Users\sebas\AMD APP SDK\3.0\include\SDKUtil\SDKBitMap.hpp"
 
 #define SAMPLE_VERSION "AMD-APP-SDK-v3.0.130.1"
 
@@ -37,8 +40,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #define LOCAL_XRES 16
 #define LOCAL_YRES 16
 
-#define WIDTH 640
-#define HEIGHT 480
+//#define WIDTH 640
+//#define HEIGHT 480
+
+#define WIDTH 256
+#define HEIGHT 256
 
 using namespace appsdk;
 

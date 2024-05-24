@@ -3,13 +3,20 @@
 int OpticalFlowApp::readInputImages(std::string inputImageName1, std::string inputImageName2)
 {	
 	// load input bitmap image
+
+    std::cout << inputImageName1 << std::endl;
+    std::cout << inputImageName2 << std::endl;
+
     inputBitmap1.load(inputImageName1.c_str());
     inputBitmap2.load(inputImageName2.c_str());
 
     // error if image did not load
     if(!inputBitmap1.isLoaded() || !inputBitmap2.isLoaded())
     {
-        std::cout << "Failed to load input images!";
+        std::cout << inputBitmap1.isLoaded() << std::endl;
+        std::cout << inputBitmap2.isLoaded() << std::endl;
+
+        std::cout << "Failed to load input images!" << std::endl;
         return SDK_FAILURE;
     }
 
@@ -220,7 +227,7 @@ int OpticalFlowApp::runOpticalFlow(void)
 
     status = clSetKernelArg(
                  opticalFlowKernel,
-                 0,
+                 1,
                  sizeof(cl_mem),
                  (void *)&inputBuffer2);
     CHECK_OPENCL_ERROR( status, "clSetKernelArg failed. (inputBuffer2)");
@@ -300,11 +307,11 @@ int OpticalFlowApp::initialize(int argc, char* argv[])
     delete use_lds;
 
     // Check if there are enough command line arguments
-    if (argc != 3)
-    {
-        std::cerr << "Usage: " << argv[0] << " <imageFile1> <imageFile2>" << std::endl;
-        return SDK_FAILURE;
-    }
+    //if (argc != 3)
+    //{
+     //   std::cerr << "Usage: " << argv[0] << " <imageFile1> <imageFile2>" << std::endl;
+    //    return SDK_FAILURE;
+    //}
 
     // Load input images from command line arguments
     imageFile1 = argv[1];
@@ -318,6 +325,11 @@ cl_int OpticalFlowApp::loadInputImages()
     // Wczytaj ścieżki do dwóch obrazów wejściowych z argumentów wiersza poleceń
     // std::string imageFile1 = "C:\\Users\\licho\\Desktop\AAW\\LAB\\LAB_03_HelloWorld\\AdvancedConvolution\\I.bmp";
     // std::string imageFile2 = "C:\\Users\\licho\\Desktop\AAW\\LAB\\LAB_03_HelloWorld\\AdvancedConvolution\\J.bmp";
+    //std::string imageFile1 = "D:\\Studia\\8_semestr\\AAW-GPU\\Proj\\AAW_OpticalFlow\\I.bmp";
+    //std::string imageFile2 = "D:\\Studia\\8_semestr\\AAW-GPU\Proj\\AAW_OpticalFlow\\J.bmp";
+
+    std::string imageFile1 = getPath() + "I.bmp";
+    std::string imageFile2 = getPath() + "J.bmp";
 
     // Sprawdź czy pliki obrazów istnieją i wczytaj je
     if (!imageFile1.empty() && !imageFile2.empty()) 
