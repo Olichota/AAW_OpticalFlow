@@ -1,16 +1,19 @@
 clear all; close all;
 
-% im1 = imread('data/img1_1.bmp');
-% im2 = imread('data/img1_2.bmp');
+% im1 = imread('../data/img1_1.bmp');
+% im2 = imread('../data/img1_2.bmp');
 
-% im1 = imread('data/img2_1rgb.jpg');
-% im2 = imread('data/img2_2rgb.jpg');
+im1 = imread('../data/img2_1.bmp');
+im2 = imread('../data/img2_2.bmp');
 
-im1 = imread('data/img3_1.png');
-im2 = imread('data/img3_2.png');
+% im1 = imread('../data/im1.bmp');
+% im2 = imread('../data/im2.bmp');
 
 im1 = rgb2gray(im1);
 im2 = rgb2gray(im2);
+
+% im1 = rgb_to_grayscale(im1);
+% im2 = rgb_to_grayscale(im2);
 
 windowSize = 9;
 
@@ -46,6 +49,7 @@ for y = halfWindow+1 : rows-halfWindow
     end
 end
 
+max(u(250))
 magnitude = sqrt(u.^2 + v.^2);
 angle = -atan2(v, u);
 
@@ -62,4 +66,4 @@ rgbImage = hsv2rgb(hsvImage);
 % Wyświetlanie obrazu
 figure(1)
 imshow(rgbImage);
-imwrite(rgbImage, 'output\out_img3_matlab.bmp')
+imwrite(rgbImage, 'outMATLAB\outMATLABoptFlow_img2.bmp')
