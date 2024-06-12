@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -rdynamic   -m64    CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o -o bin/x86_64/Release/AdvancedConvolution  -Wl,-rpath,/home/sebastian/AMDAPPSDK-2.9-1/lib/x86_64 /home/sebastian/AMDAPPSDK-2.9-1/lib/x86_64/libOpenCL.so -lrt 

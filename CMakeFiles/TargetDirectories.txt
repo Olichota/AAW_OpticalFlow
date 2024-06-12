@@ -1,0 +1,3 @@
+/home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles/AdvancedConvolution.dir
+/home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles/edit_cache.dir
+/home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles/rebuild_cache.dir
