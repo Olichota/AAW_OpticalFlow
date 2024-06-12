@@ -31,11 +31,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 #define SAMPLE_VERSION "AMD-APP-SDK-v3.0.130.1"
 
-#define INPUT_IMAGE_FIRST "I.bmp"
-#define INPUT_IMAGE_SECOND "J.bmp"
-#define OUTPUT_IMAGE_NON_SEPARABLE "NonSeparableOutputImage.bmp"
-#define OUTPUT_IMAGE_SEPARABLE "SeparableOutputImage.bmp"
-#define OUTPUT_IMAGE_OPTICAL_FLOW "OpticalFlowOutputImage.bmp"
+#define INPUT_PREFIX "im"
 
 #define LOCAL_XRES 16
 #define LOCAL_YRES 16
@@ -50,9 +46,6 @@ using namespace appsdk;
 class AdvancedConvolution
 {
         cl_double    setupTime;          /**< Time for setting up OpenCL */
-        cl_double    totalOpticalFlowKernelTime;	
-        cl_double    totalNonSeparableKernelTime;    /**< Time for Non-Separable kernel execution */
-		cl_double    totalSeparableKernelTime;		 /**< Time for Separable kernel execution */
 
         cl_uint      width;              /**< Width of the Input array */
         cl_uint      height;             /**< Height of the Input array */
@@ -65,18 +58,14 @@ class AdvancedConvolution
         cl_uchar4*	 paddedInputSecondImage2D;
 
         cl_uchar4*   opticalFlowOutputImage2D;
-		cl_uchar4*   nonSepOutputImage2D;
-		cl_uchar4*   sepOutputImage2D;
 
         cl_uchar*	 opticalFlowVerificationOutput;
-		cl_uchar*	 nonSepVerificationOutput;   /**< Output array for non-Separable reference implementation */
-        cl_uchar*	 sepVerificationOutput;   /**< Output array for Separable reference implementation */
 
 		cl_float     *mask;              /**< mask array */
 		cl_float     *rowFilter;		 /**< Row-wise filter for pass1 */
 		cl_float     *colFilter;		 /**< Column-wise filter for pass2 */
 
-		cl_uint		 numOfImages;		 /**< FilterSize */
+
         cl_uint      windowSize;         /**< windowSize: 0: Sobel filter, 1: Box filter > */
 		cl_uint		 filterRadius;		 /**< Filter Radius */
 		cl_uint		 padding;			 /**< Padding Width */
@@ -93,8 +82,6 @@ class AdvancedConvolution
 		cl_command_queue commandQueue ;   /**< CL command queue */
 		cl_program   program ;            /**< CL program  */
         cl_kernel    opticalFlowkernel ; /**< CL kernel for Non-Separable Filter */
-        cl_kernel    nonSeparablekernel ; /**< CL kernel for Non-Separable Filter */
-		cl_kernel    separablekernel ;	 /**< CL kernel for Separable Filter */
 
 		SDKBitMap inputBitmapFirst;	     /**< Bitmap class object */
         SDKBitMap inputBitmapSecond;	 /**< Bitmap class object */
@@ -112,8 +99,11 @@ class AdvancedConvolution
         SDKTimer *sampleTimer;      /**< SDKTimer object */
 
     public:
-
+        cl_uint		 numOfImages;		 /**< FilterSize */
+        cl_double    opticalFlowKernelTime;	
+        cl_double    totalOpticalFlowKernelTime;	
         CLCommandArgs   *sampleArgs;   /**< CLCommand argument class */
+        std::string outputImageName;
 
 		/**
         * Read bitmap image and allocate host memory
@@ -144,9 +134,9 @@ class AdvancedConvolution
 			pixelSize = sizeof(uchar4);
 			pixelFirstData = NULL;
             setupTime = 0;
+            opticalFlowKernelTime = 0;
             totalOpticalFlowKernelTime = 0;
-			totalNonSeparableKernelTime = 0;
-            totalSeparableKernelTime = 0;
+            outputImageName = "OpticalFlow_1-2.bmp";
             iterations = 1;
 
 			 context = NULL;            /**< CL context */
@@ -160,8 +150,6 @@ class AdvancedConvolution
 			commandQueue = NULL;   /**< CL command queue */
 			program = NULL;            /**< CL program  */
             opticalFlowkernel = NULL;
-			nonSeparablekernel = NULL; /**< CL kernel for Non-Separable Filter */
-			separablekernel = NULL;	 /**< CL kernel for Separable Filter */
         }
 
         /**
@@ -192,21 +180,6 @@ class AdvancedConvolution
          * @return SDK_SUCCESS on success and SDK_FAILURE0 on failure
          */
 		int runOpticalFlowCLKernels();
-
-
-		/**
-         * Set values for Non-Separable kernels' arguments, enqueue calls to the kernels
-         * on to the command queue, wait till end of kernel execution.
-         * @return SDK_SUCCESS on success and SDK_FAILURE0 on failure
-         */
-		int runNonSeparableCLKernels();
-
-		/**
-         * Set values for Separable kernels' arguments, enqueue calls to the kernels
-         * on to the command queue, wait till end of kernel execution.
-         * @return SDK_SUCCESS on success and SDK_FAILURE0 on failure
-         */
-		int runSeparableCLKernels();
 
         /**
          * Reference CPU implementation of Advanced Convolution
