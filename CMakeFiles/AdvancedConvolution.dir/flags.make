@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/opt/AMDAPPSDK-3.0/include -I/home/sebastian/studia/AAW/AdvancedConvolution/../../../../../include/SDKUtil -I/home/sebastian/AMDAPPSDK-2.9-1/include/SDKUtil
+CXX_INCLUDES = -I/opt/AMDAPPSDK-3.0/include -I/home/sebastian/studia/AAW/AAW_OpticalFlow/../../../../../include/SDKUtil -I/home/sebastian/AMDAPPSDK-2.9-1/include/SDKUtil
 
 CXX_FLAGS = -O3 -DNDEBUG   -msse2  -m64   
 

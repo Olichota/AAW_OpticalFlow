@@ -43,22 +43,24 @@ void opticalFlow(__global uchar4* input1,
 
     int x = get_global_id(0);
     int y = get_global_id(1);
-    
-    
+
 
     // int windowSize = 9;  // Rozmiar okna 5x5
     int halfWindow = windowSize / 2;
 
-    
-    if (x < (halfWindow + 1) || x >= nWidth - (halfWindow + 1) || y < (halfWindow + 1) || y >= nHeight - (halfWindow + 1))
+    if (x < (halfWindow + 1) || x >= (nWidth+halfWindow) || y < (halfWindow + 1) || y >= (nHeight+halfWindow))
         return;
+
+    
+
+    
 
     float A = 0.0f, B = 0.0f, C = 0.0f, D = 0.0f, E = 0.0f;
 
 
     for (int j = -halfWindow; j <= halfWindow; j++) {
         for (int i = -halfWindow; i <= halfWindow; i++) {
-            int currentIdx = (y + j) * nWidth + (x + i);
+            int currentIdx = (y + j) * (nWidth + 2*halfWindow) + (x + i);
             
             float I1 = dot(convert_float4(input1[currentIdx]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f));
             float I2 = dot(convert_float4(input2[currentIdx]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f));
@@ -66,8 +68,8 @@ void opticalFlow(__global uchar4* input1,
             // Obliczanie gradientów przestrzennych i czasowych
             float Ix = (dot(convert_float4(input1[currentIdx + 1]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f)) -
                         dot(convert_float4(input1[currentIdx - 1]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f))) * 0.5f;
-            float Iy = (dot(convert_float4(input1[currentIdx + nWidth]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f)) -
-                        dot(convert_float4(input1[currentIdx - nWidth]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f))) * 0.5f;
+            float Iy = (dot(convert_float4(input1[currentIdx + (nWidth + 2*halfWindow)]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f)) -
+                        dot(convert_float4(input1[currentIdx - (nWidth + 2*halfWindow)]).xyz, (float3)(0.2989f, 0.5870f, 0.1140f))) * 0.5f;
             float It = I2 - I1;
 
             // Tensor struktury
@@ -125,5 +127,5 @@ void opticalFlow(__global uchar4* input1,
 
 
 
-    output[y * nWidth + x] = (uchar4){(uchar)r,(uchar)g,(uchar)b,255};
+    output[(y-halfWindow) * nWidth + (x-halfWindow)] = (uchar4){(uchar)r,(uchar)g,(uchar)b,255};
 }

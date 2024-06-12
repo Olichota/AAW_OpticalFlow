@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sebastian/studia/AAW/AdvancedConvolution
+CMAKE_SOURCE_DIR = /home/sebastian/studia/AAW/AAW_OpticalFlow
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sebastian/studia/AAW/AdvancedConvolution
+CMAKE_BINARY_DIR = /home/sebastian/studia/AAW/AAW_OpticalFlow
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all:
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles /home/sebastian/studia/AAW/AdvancedConvolution//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sebastian/studia/AAW/AAW_OpticalFlow/CMakeFiles /home/sebastian/studia/AAW/AAW_OpticalFlow//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sebastian/studia/AAW/AAW_OpticalFlow/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

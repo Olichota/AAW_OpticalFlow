@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sebastian/studia/AAW/AdvancedConvolution
+CMAKE_SOURCE_DIR = /home/sebastian/studia/AAW/AAW_OpticalFlow
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sebastian/studia/AAW/AdvancedConvolution
+CMAKE_BINARY_DIR = /home/sebastian/studia/AAW/AAW_OpticalFlow
 
 # Include any dependencies generated for this target.
 include CMakeFiles/AdvancedConvolution.dir/depend.make
@@ -72,16 +72,16 @@ include CMakeFiles/AdvancedConvolution.dir/flags.make
 CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o: CMakeFiles/AdvancedConvolution.dir/flags.make
 CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o: AdvancedConvolution.cpp
 CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o: CMakeFiles/AdvancedConvolution.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o -MF CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o.d -o CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o -c /home/sebastian/studia/AAW/AdvancedConvolution/AdvancedConvolution.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sebastian/studia/AAW/AAW_OpticalFlow/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o -MF CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o.d -o CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o -c /home/sebastian/studia/AAW/AAW_OpticalFlow/AdvancedConvolution.cpp
 
 CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sebastian/studia/AAW/AdvancedConvolution/AdvancedConvolution.cpp > CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sebastian/studia/AAW/AAW_OpticalFlow/AdvancedConvolution.cpp > CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.i
 
 CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sebastian/studia/AAW/AdvancedConvolution/AdvancedConvolution.cpp -o CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sebastian/studia/AAW/AAW_OpticalFlow/AdvancedConvolution.cpp -o CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.s
 
 # Object files for target AdvancedConvolution
 AdvancedConvolution_OBJECTS = \
@@ -94,14 +94,14 @@ bin/x86_64/Release/AdvancedConvolution: CMakeFiles/AdvancedConvolution.dir/Advan
 bin/x86_64/Release/AdvancedConvolution: CMakeFiles/AdvancedConvolution.dir/build.make
 bin/x86_64/Release/AdvancedConvolution: /home/sebastian/AMDAPPSDK-2.9-1/lib/x86_64/libOpenCL.so
 bin/x86_64/Release/AdvancedConvolution: CMakeFiles/AdvancedConvolution.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable bin/x86_64/Release/AdvancedConvolution"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/sebastian/studia/AAW/AAW_OpticalFlow/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable bin/x86_64/Release/AdvancedConvolution"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/AdvancedConvolution.dir/link.txt --verbose=$(VERBOSE)
-	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AdvancedConvolution/AdvancedConvolution_Kernels.cl /home/sebastian/studia/AAW/AdvancedConvolution/bin/x86_64/Release/.
-	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AdvancedConvolution/AdvancedConvolution_Kernels.cl ./
-	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AdvancedConvolution/I.bmp /home/sebastian/studia/AAW/AdvancedConvolution/bin/x86_64/Release/.
-	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AdvancedConvolution/I.bmp ./
-	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AdvancedConvolution/J.bmp /home/sebastian/studia/AAW/AdvancedConvolution/bin/x86_64/Release/.
-	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AdvancedConvolution/J.bmp ./
+	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AAW_OpticalFlow/AdvancedConvolution_Kernels.cl /home/sebastian/studia/AAW/AAW_OpticalFlow/bin/x86_64/Release/.
+	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AAW_OpticalFlow/AdvancedConvolution_Kernels.cl ./
+	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AAW_OpticalFlow/I.bmp /home/sebastian/studia/AAW/AAW_OpticalFlow/bin/x86_64/Release/.
+	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AAW_OpticalFlow/I.bmp ./
+	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AAW_OpticalFlow/J.bmp /home/sebastian/studia/AAW/AAW_OpticalFlow/bin/x86_64/Release/.
+	/usr/bin/cmake -E copy_if_different /home/sebastian/studia/AAW/AAW_OpticalFlow/J.bmp ./
 
 # Rule to build all files generated by this target.
 CMakeFiles/AdvancedConvolution.dir/build: bin/x86_64/Release/AdvancedConvolution
@@ -112,6 +112,6 @@ CMakeFiles/AdvancedConvolution.dir/clean:
 .PHONY : CMakeFiles/AdvancedConvolution.dir/clean
 
 CMakeFiles/AdvancedConvolution.dir/depend:
-	cd /home/sebastian/studia/AAW/AdvancedConvolution && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sebastian/studia/AAW/AdvancedConvolution /home/sebastian/studia/AAW/AdvancedConvolution /home/sebastian/studia/AAW/AdvancedConvolution /home/sebastian/studia/AAW/AdvancedConvolution /home/sebastian/studia/AAW/AdvancedConvolution/CMakeFiles/AdvancedConvolution.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sebastian/studia/AAW/AAW_OpticalFlow && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sebastian/studia/AAW/AAW_OpticalFlow /home/sebastian/studia/AAW/AAW_OpticalFlow /home/sebastian/studia/AAW/AAW_OpticalFlow /home/sebastian/studia/AAW/AAW_OpticalFlow /home/sebastian/studia/AAW/AAW_OpticalFlow/CMakeFiles/AdvancedConvolution.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/AdvancedConvolution.dir/depend
 

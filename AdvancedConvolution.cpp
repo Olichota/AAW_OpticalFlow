@@ -142,20 +142,31 @@ AdvancedConvolution::readInputImage(std::string inputImageFirstName, std::string
 
 	// allocate and initalize memory for padded input image data to host
 
-	// filterRadius = numOfImages - 1;
-	// paddedHeight = height + filterRadius;
-	// paddedWidth = width + filterRadius;
+	filterRadius = windowSize / 2;
+	paddedHeight = height + (2*filterRadius);
+	paddedWidth = width + (2*filterRadius);
 
-    // paddedInputFirstImage2D = (cl_uchar4*)malloc(paddedWidth * paddedHeight * sizeof(cl_uchar4));
-    // CHECK_ALLOCATION(paddedInputFirstImage2D,"Failed to allocate memory! (paddedInputFirstImage2D)");
-	// memset(paddedInputFirstImage2D, 0, paddedHeight*paddedWidth*sizeof(cl_uchar4));
-	// for(cl_uint i = filterRadius; i < height + filterRadius; i++)
-	// {
-	// 	for(cl_uint j = filterRadius; j < width + filterRadius; j++)
-	// 	{
-	// 		paddedInputFirstImage2D[i * paddedWidth + j] = inputFirstImage2D[(i - filterRadius) * width + (j - filterRadius)];		
-	// 	}
-	// }
+    paddedInputFirstImage2D = (cl_uchar4*)malloc(paddedWidth * paddedHeight * sizeof(cl_uchar4));
+    CHECK_ALLOCATION(paddedInputFirstImage2D,"Failed to allocate memory! (paddedInputFirstImage2D)");
+	memset(paddedInputFirstImage2D, 0, paddedHeight*paddedWidth*sizeof(cl_uchar4));
+	for(cl_uint i = filterRadius; i < height + filterRadius; i++)
+	{
+		for(cl_uint j = filterRadius; j < width + filterRadius; j++)
+		{
+			paddedInputFirstImage2D[i * paddedWidth + j] = inputFirstImage2D[(i - filterRadius) * width + (j - filterRadius)];		
+		}
+	}
+
+    paddedInputSecondImage2D = (cl_uchar4*)malloc(paddedWidth * paddedHeight * sizeof(cl_uchar4));
+    CHECK_ALLOCATION(paddedInputSecondImage2D,"Failed to allocate memory! (paddedInputSecondImage2D)");
+	memset(paddedInputSecondImage2D, 0, paddedHeight*paddedWidth*sizeof(cl_uchar4));
+	for(cl_uint i = filterRadius; i < height + filterRadius; i++)
+	{
+		for(cl_uint j = filterRadius; j < width + filterRadius; j++)
+		{
+			paddedInputSecondImage2D[i * paddedWidth + j] = inputSecondImage2D[(i - filterRadius) * width + (j - filterRadius)];		
+		}
+	}
 
 	
     opticalFlowOutputImage2D = (cl_uchar4*)malloc(width * height * sizeof(cl_uchar4));
@@ -172,9 +183,9 @@ AdvancedConvolution::readInputImage(std::string inputImageFirstName, std::string
 	localThreads[1] = blockSizeY;
 
 	// set global work-group size, padding work-items do not need to be considered
-	globalThreads[0] = (width + localThreads[0] - 1) / localThreads[0];
+	globalThreads[0] = (paddedWidth + localThreads[0] - 1) / localThreads[0];
     globalThreads[0] *= localThreads[0];
-    globalThreads[1] = (height + localThreads[1] - 1) / localThreads[1];
+    globalThreads[1] = (paddedHeight + localThreads[1] - 1) / localThreads[1];
     globalThreads[1] *= localThreads[1];
 
     return SDK_SUCCESS;
@@ -295,19 +306,18 @@ AdvancedConvolution::setupCL(void)
     inputFirstBuffer = clCreateBuffer(
                       context,
                       CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
-					  pixelSize * width * height,
-					  inputFirstImage2D,
+					  pixelSize * paddedWidth * paddedHeight,
+					  paddedInputFirstImage2D,
                       &status);
     CHECK_OPENCL_ERROR(status, "clCreateBuffer failed. (inputFirstBuffer)");
 
     inputSecondBuffer = clCreateBuffer(
                       context,
                       CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
-					  pixelSize * width * height,
-					  inputSecondImage2D,
+					  pixelSize * paddedWidth * paddedHeight,
+					  paddedInputSecondImage2D,
                       &status);
     CHECK_OPENCL_ERROR(status, "clCreateBuffer failed. (inputSecondBuffer)");
-
 
 	outputBuffer = clCreateBuffer(
                        context,
@@ -597,7 +607,6 @@ int AdvancedConvolution::run()
 	sampleTimer->resetTimer(timer);
     sampleTimer->startTimer(timer);
 
-    std::cout << "AAAAAAAa" << std::endl;
 
     // running optical flow
 	for(int i = 0; i < iterations; i++)
@@ -605,8 +614,6 @@ int AdvancedConvolution::run()
         status = runOpticalFlowCLKernels();
         CHECK_ERROR(status, SDK_SUCCESS, "OpenCL run Kernel failed for Optical Flow");
     }
-
-    std::cout << "AAAAAAAa" << std::endl;
 
     sampleTimer->stopTimer(timer);
     totalOpticalFlowKernelTime = (double)(sampleTimer->readTimer(timer)) / iterations;
@@ -623,8 +630,6 @@ int AdvancedConvolution::run()
 					NULL,
 					NULL);
 	CHECK_OPENCL_ERROR( status, "clEnqueueReadBuffer(opticalFlowOutputImage2D) failed.");
-
-    std::cout << "AAAAAAAa" << std::endl;
 
 	// write the optical flow output image to bitmap file
     status = writeOutputImage(OUTPUT_IMAGE_OPTICAL_FLOW, opticalFlowOutputImage2D);
@@ -792,7 +797,8 @@ int AdvancedConvolution::cleanup()
     // release program resources (input memory etc.)
 	FREE(inputFirstImage2D);
     FREE(inputSecondImage2D);
-	// FREE(paddedInputFirstImage2D);
+	FREE(paddedInputFirstImage2D);
+    FREE(paddedInputSecondImage2D);
     FREE(opticalFlowOutputImage2D);
     FREE(opticalFlowVerificationOutput);
     FREE(devices);

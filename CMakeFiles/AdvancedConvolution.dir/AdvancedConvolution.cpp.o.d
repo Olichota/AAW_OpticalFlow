@@ -1,7 +1,7 @@
 CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o: \
- /home/sebastian/studia/AAW/AdvancedConvolution/AdvancedConvolution.cpp \
+ /home/sebastian/studia/AAW/AAW_OpticalFlow/AdvancedConvolution.cpp \
  /usr/include/stdc-predef.h \
- /home/sebastian/studia/AAW/AdvancedConvolution/AdvancedConvolution.hpp \
+ /home/sebastian/studia/AAW/AAW_OpticalFlow/AdvancedConvolution.hpp \
  /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -227,4 +227,4 @@ CMakeFiles/AdvancedConvolution.dir/AdvancedConvolution.cpp.o: \
  /home/sebastian/AMDAPPSDK-2.9-1/include/SDKUtil/SDKFile.hpp \
  /usr/include/c++/11/cstring \
  /home/sebastian/AMDAPPSDK-2.9-1/include/SDKUtil/SDKBitMap.hpp \
- /home/sebastian/studia/AAW/AdvancedConvolution/FilterCoeff.h
+ /home/sebastian/studia/AAW/AAW_OpticalFlow/FilterCoeff.h
