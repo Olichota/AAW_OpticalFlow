@@ -27,66 +27,18 @@ AdvancedConvolution::readInputImage(std::string inputImageFirstName, std::string
 		return SDK_EXPECTED_FAILURE;
 	}
 
-	// initialization of mask 
-	// if(numOfImages != 3 && numOfImages != 5)
-	// {
-	// 	std::cout << "Filter Size should be either 3 or 5" << std::endl;
-	// 	return SDK_EXPECTED_FAILURE;
-	// }
+	if(numOfImages < 2)
+	{
+		std::cout << "Num of images should be grather than 1" << std::endl;
+		return SDK_EXPECTED_FAILURE;
+	}
 
-    // if (windowSize !=0 && windowSize != 1 && windowSize !=2)
-    // {
-    //     std::cout << "Filter Type can only be 0, 1 or 2 for Sobel, Box and Gaussian filters respectively." << std::endl;
-	// 	return SDK_EXPECTED_FAILURE;
-    // }
+    if(windowSize < 3)
+	{
+		std::cout << "Window size should be grather than 2" << std::endl;
+		return SDK_EXPECTED_FAILURE;
+	}
 
-    // switch (windowSize)
-    // {
-    // case 0: /* Sobel Filter */
-    //     if(numOfImages == 3)
-	//     {
-	// 	    mask = SOBEL_FILTER_3x3;
-	// 	    rowFilter = SOBEL_FILTER_3x3_pass1;
-	// 	    colFilter = SOBEL_FILTER_3x3_pass2;
-	//     }
-	//     else
-	//     {
-	// 	    mask = SOBEL_FILTER_5x5;
-	// 	    rowFilter = SOBEL_FILTER_5x5_pass1;
-	// 	    colFilter = SOBEL_FILTER_5x5_pass2;
-	//     }
-    //     break;
-
-    // case 1: /* Box Filter */
-    //     if(numOfImages == 3)
-	//     {
-	// 	    mask = BOX_FILTER_3x3;
-	// 	    rowFilter = BOX_FILTER_3x3_pass1;
-	// 	    colFilter = BOX_FILTER_3x3_pass2;
-	//     }
-	//     else
-	//     {
-	// 	    mask = BOX_FILTER_5x5;
-	// 	    rowFilter = BOX_FILTER_5x5_pass1;
-	// 	    colFilter = BOX_FILTER_5x5_pass2;
-	//     }
-    //     break;
-
-    // case 2: /* Gaussian Filter */
-    //     if(numOfImages == 3)
-	//     {
-	// 	    mask = GAUSSIAN_FILTER_3x3;
-	// 	    rowFilter = GAUSSIAN_FILTER_3x3_pass1;
-	// 	    colFilter = GAUSSIAN_FILTER_3x3_pass2;
-	//     }
-	//     else
-	//     {
-	// 	    mask = GAUSSIAN_FILTER_5x5;
-	// 	    rowFilter = GAUSSIAN_FILTER_5x5_pass1;
-	// 	    colFilter = GAUSSIAN_FILTER_5x5_pass2;
-	//     }
-    //     break;
-    // }
 	
 
 	// load input bitmap image
@@ -207,22 +159,6 @@ AdvancedConvolution::writeOutputImage(std::string outputImageName, cl_uchar4 *ou
     return SDK_SUCCESS;
 }
 
-// int
-// AdvancedConvolution::genBinaryImage()
-// {
-//     bifData binaryData;
-//     binaryData.kernelName = std::string("AdvancedConvolution_Kernels.cl");
-//     binaryData.flagsStr = std::string("");
-//     if(sampleArgs->isComplierFlagsSpecified())
-//     {
-//         binaryData.flagsFileName = std::string(sampleArgs->flags.c_str());
-//     }
-
-//     binaryData.binaryName = std::string(sampleArgs->dumpBinary.c_str());
-//     int status = generateBinaryImage(binaryData);
-//     return status;
-// }
-
 
 int
 AdvancedConvolution::setupCL(void)
@@ -327,30 +263,6 @@ AdvancedConvolution::setupCL(void)
                        &status);
     CHECK_OPENCL_ERROR( status,  "clCreateBuffer failed. (outputBuffer)");
 
-	// maskBuffer = clCreateBuffer(
-    //                  context,
-    //                  CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
-	// 				 sizeof(cl_float ) * numOfImages * numOfImages,
-    //                  mask,
-    //                  &status);
-    // CHECK_OPENCL_ERROR( status, "clCreateBuffer failed. (maskBuffer)");
-
-	// rowFilterBuffer = clCreateBuffer(
-    //                  context,
-    //                  CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
-    //                  sizeof(cl_float ) * numOfImages,
-    //                  rowFilter,
-    //                  &status);
-    // CHECK_OPENCL_ERROR( status, "clCreateBuffer failed. (rowFilterBuffer)");
-
-	// colFilterBuffer = clCreateBuffer(
-    //                  context,
-    //                  CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR,
-    //                  sizeof(cl_float ) * numOfImages,
-    //                  colFilter,
-    //                  &status);
-    // CHECK_OPENCL_ERROR( status, "clCreateBuffer failed. (colFilterBuffer)");
-
     // create a CL program using the kernel source
 	char option[256];
     sprintf(option, "-DFILTERSIZE=%d -DLOCAL_XRES=%d -DLOCAL_YRES=%d -DUSE_LDS=%d",
@@ -452,43 +364,6 @@ AdvancedConvolution::runOpticalFlowCLKernels(void)
 
     return SDK_SUCCESS;
 }
-
-
-/**
- * Reference CPU implementation of Advanced Convolution kernel
- * for performance comparison
- */
-// void
-// AdvancedConvolution::CPUReference()
-// {	
-//     for(cl_uint i = 0; i < height; ++i)
-//     {
-//         for(cl_uint j = 0; j < width; ++j)
-//         {
-// 			cl_float4 sum = {0.0f, 0.0f, 0.0f, 0.0f};
-// 			for(cl_uint m = 0; m < numOfImages; m++)
-// 			{
-// 				for(cl_uint n = 0; n < numOfImages; n++)
-// 				{
-// 					cl_uint maskIndex = m*numOfImages+n;
-// 					cl_uint inputIndex = (i+m)*width + (j+n);
-
-// 					// copy uchar4 data to float4
-// 					sum.s[0] += (cl_float)(inputFirstImage2D[inputIndex].s[0]) * (mask[maskIndex]);
-// 					sum.s[1] += (cl_float)(inputFirstImage2D[inputIndex].s[1]) * (mask[maskIndex]);
-// 					sum.s[2] += (cl_float)(inputFirstImage2D[inputIndex].s[2]) * (mask[maskIndex]);
-// 					sum.s[3] += (cl_float)(inputFirstImage2D[inputIndex].s[3]) * (mask[maskIndex]);
-// 				}
-// 			}
-
-// 			// calculating cpu reference for advanced convolution kernel
-// 			nonSepVerificationOutput[((i*width + j) * 4) + 0] = (cl_uchar)((sum.s[0] < 0) ? 0 : ((sum.s[0] > 255.0) ? 255 : sum.s[0]));
-// 			nonSepVerificationOutput[((i*width + j) * 4) + 1] = (cl_uchar)((sum.s[1] < 0) ? 0 : ((sum.s[1] > 255.0) ? 255 : sum.s[1]));
-// 			nonSepVerificationOutput[((i*width + j) * 4) + 2] = (cl_uchar)((sum.s[2] < 0) ? 0 : ((sum.s[2] > 255.0) ? 255 : sum.s[2]));
-// 			nonSepVerificationOutput[((i*width + j) * 4) + 3] = (cl_uchar)((sum.s[3] < 0) ? 0 : ((sum.s[3] > 255.0) ? 255 : sum.s[3]));
-// 		}
-// 	}	
-// }
 
 int AdvancedConvolution::initialize()
 {
@@ -638,82 +513,6 @@ int AdvancedConvolution::run()
     return SDK_SUCCESS;
 }
 
-// int AdvancedConvolution::verifyResults()
-// {
-//     if(sampleArgs->verify)
-//     {
-//         /**
-// 		* Reference implementation on host device
-// 		*/
-// 		CPUReference();
-
-// 		float *outputDevice = new float[width * height * pixelSize];
-//         CHECK_ALLOCATION(outputDevice,"Failed to allocate host memory! (outputDevice)");
-	
-// 		float *outputReference = new float[width * height * pixelSize];
-// 		CHECK_ALLOCATION(outputReference, "Failed to allocate host memory! (outputReference)");
-
-// 		std::cout << "Verifying advanced non-Separable Convolution Kernel result - ";
-
-// 		for(int i = 0; i < (int)(width * height); i++)
-// 		{
-// 			// copy uchar data to float array from verificationConvolutionOutput
-// 			outputReference[i * 4 + 0] = nonSepVerificationOutput[i * 4 + 0];
-// 			outputReference[i * 4 + 1] = nonSepVerificationOutput[i * 4 + 1];
-// 			outputReference[i * 4 + 2] = nonSepVerificationOutput[i * 4 + 2];
-// 			outputReference[i * 4 + 3] = nonSepVerificationOutput[i * 4 + 3];
-
-// 			// copy uchar data to float array from global kernel
-// 			outputDevice[i * 4 + 0] = nonSepOutputImage2D[i].s[0];
-// 			outputDevice[i * 4 + 1] = nonSepOutputImage2D[i].s[1];
-// 			outputDevice[i * 4 + 2] = nonSepOutputImage2D[i].s[2];
-// 			outputDevice[i * 4 + 3] = nonSepOutputImage2D[i].s[3];
-// 		}		
-
-// 		// compare the results and see if they match
-//         if(compare(outputDevice, outputReference, width * height * 4))
-//         {
-//             std::cout << "Passed!\n" << std::endl;
-//         }
-//         else
-//         {
-// 			delete[] outputDevice;
-// 			delete[] outputReference;
-//             std::cout << "Failed\n" << std::endl;
-//             return SDK_FAILURE;
-//         }
-
-// 		std::cout << "Verifying advanced Separable Convolution Kernel result - ";
-
-// 		memset(outputDevice, 0, width*height*4);
-//         for(int i = 0; i < (int)(width * height); i++)
-//         {
-// 			// copy uchar data to float array from global kernel
-//             outputDevice[i * 4 + 0] = sepOutputImage2D[i].s[0];
-//             outputDevice[i * 4 + 1] = sepOutputImage2D[i].s[1];
-//             outputDevice[i * 4 + 2] = sepOutputImage2D[i].s[2];
-//             outputDevice[i * 4 + 3] = sepOutputImage2D[i].s[3];
-//         }
-
-//         // compare the results and see if they match
-//         if(compare(outputDevice, outputReference, width * height * 4))
-//         {
-// 			delete[] outputDevice;
-// 			delete[] outputReference;
-//             std::cout << "Passed!\n" << std::endl;
-//         }
-//         else
-//         {
-// 			delete[] outputDevice;
-// 			delete[] outputReference;
-//             std::cout << "Failed!\n" << std::endl;
-//             return SDK_FAILURE;
-//         }
-//     }
-
-//     return SDK_SUCCESS;
-// }
-
 void AdvancedConvolution::printStats()
 {
     if(sampleArgs->timing)
@@ -764,24 +563,6 @@ int AdvancedConvolution::cleanup()
 		CHECK_OPENCL_ERROR(status, "clReleaseMemObject failed.(outputBuffer)");
 	}
 
-	// if (maskBuffer)
-	// {
-	// 	status = clReleaseMemObject(maskBuffer);
-	// 	CHECK_OPENCL_ERROR(status, "clReleaseMemObject failed.(maskBuffer)");
-	// }
-
-	// if (rowFilterBuffer)
-	// {
-	// 	status = clReleaseMemObject(rowFilterBuffer);
-	// 	CHECK_OPENCL_ERROR(status, "clReleaseMemObject failed.(rowFilterBuffer)");
-	// }
-
-	// if(colFilterBuffer)
-	// {
-	// 	status = clReleaseMemObject(colFilterBuffer);
-	// 	CHECK_OPENCL_ERROR(status, "clReleaseMemObject failed.(colFilterBuffer)");
-	// }
-
 	if (commandQueue)
 	{
 		status = clReleaseCommandQueue(commandQueue);
@@ -821,11 +602,6 @@ main(int argc, char * argv[])
         return SDK_FAILURE;
     }
 
-    // if(clAdvancedConvolution.sampleArgs->isDumpBinaryEnabled())
-    // {
-    //     return clAdvancedConvolution.genBinaryImage();
-    // }
-
 	int status = clAdvancedConvolution.setup();
     if (status != SDK_SUCCESS)
     {
@@ -838,11 +614,6 @@ main(int argc, char * argv[])
     {
         return SDK_FAILURE;
     }
-
-    // if (clAdvancedConvolution.verifyResults() != SDK_SUCCESS)
-    // {
-    //     return SDK_FAILURE;
-    // }
 
     if (clAdvancedConvolution.cleanup() != SDK_SUCCESS)
     {
